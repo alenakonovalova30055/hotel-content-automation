@@ -1,0 +1,35 @@
+{
+  "fonts": [
+    "Arial",
+    "Helvetica",
+    "Georgia"
+  ],
+  "text_colors": [
+    "white",
+    "#FFE5B4",
+    "#FFB6C1",
+    "#ADD8E6"
+  ],
+  "text_positions": [
+    "bottom",
+    "center",
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right"
+  ],
+  "transitions": [
+    "fade",
+    "crossfade"
+  ],
+  "font_sizes": {
+    "small": 40,
+    "medium": 60,
+    "large": 80
+  },
+  "text_styles": {
+    "shadow": true,
+    "outline": true,
+    "background": false
+  }
+}
