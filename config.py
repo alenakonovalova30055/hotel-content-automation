@@ -5,7 +5,6 @@ load_dotenv()
 
 # Google Drive
 GOOGLE_DRIVE_FOLDER_ID = os.getenv('GOOGLE_DRIVE_FOLDER_ID')
-GOOGLE_SERVICE_ACCOUNT_PATH = os.getenv('GOOGLE_SERVICE_ACCOUNT_PATH')
 
 # OpenAI
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')

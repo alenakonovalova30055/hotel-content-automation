@@ -5,6 +5,7 @@ from src.logger import logger
 from src.google_drive import authenticate_drive, list_all_files_recursive, download_file
 from src.telegram_handler import TelegramHandler
 from src.openai_handler import OpenAIHandler
+from src.content_processor import ContentProcessor
 
 load_dotenv()
 
@@ -26,9 +27,10 @@ async def main():
             logger.warning("⚠️ Файлы не найдены")
             return
         
-        # 3. Инициализация OpenAI и Telegram
+        # 3. Инициализация OpenAI, Telegram и Content Processor
         openai_handler = OpenAIHandler()
         telegram_handler = TelegramHandler()
+        content_processor = ContentProcessor()
         
         # 4. Обработка файлов
         for file in files[:3]:  # Обрабатываем первые 3 файла
@@ -41,16 +43,18 @@ async def main():
             file_path = download_file(drive_service, file_id, file_name)
             
             if file_path:
-                # Читаем содержимое файла
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
+                # Обрабатываем содержимое файла с помощью ContentProcessor
+                content = content_processor.process_file(file_path)
                 
-                # Генерируем описание с помощью OpenAI
-                description = openai_handler.generate_description(content)
-                
-                if description:
-                    # Отправляем в Telegram
-                    await telegram_handler.send_message(f"📝 {file_name}\n\n{description}")
+                if content:
+                    # Генерируем описание с помощью OpenAI
+                    description = openai_handler.generate_description(content)
+                    
+                    if description:
+                        # Отправляем в Telegram
+                        await telegram_handler.send_message(f"📝 {file_name}\n\n{description}")
+                else:
+                    logger.warning(f"⚠️ Не удалось извлечь контент из файла: {file_name}")
                 
                 # Удаляем временный файл
                 os.remove(file_path)

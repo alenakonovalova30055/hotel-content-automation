@@ -33,7 +33,7 @@ async def test_all():
         'TELEGRAM_BOT_TOKEN',
         'TELEGRAM_USER_ID',
         'GOOGLE_DRIVE_FOLDER_ID',
-        'GOOGLE_SERVICE_ACCOUNT_PATH'
+        'GOOGLE_SERVICE_ACCOUNT_JSON'
     ]
     
     for var in required_vars:
