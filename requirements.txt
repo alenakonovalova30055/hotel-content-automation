@@ -4,6 +4,6 @@ google-auth-oauthlib==1.1.0
 google-api-python-client==2.108.0
 openai==1.6.1
 moviepy==1.0.3
-Pillow==10.1.0
+Pillow>=10.3.0
 python-telegram-bot==20.7
 requests==2.31.0
