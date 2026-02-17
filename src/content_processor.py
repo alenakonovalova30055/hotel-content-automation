@@ -112,7 +112,7 @@ class ContentProcessor:
             content_lines = []
             
             # Add headers if present
-            if rows and len(rows) > 0:
+            if rows:
                 headers = rows[0]
                 content_lines.append("Данные из таблицы:\n")
                 

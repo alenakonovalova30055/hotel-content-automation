@@ -30,7 +30,7 @@ class TelegramHandler:
             except (NetworkError, TimedOut) as e:
                 if attempt < self.max_retries - 1:
                     logger.warning(f"⚠️ Ошибка сети Telegram (попытка {attempt + 1}/{self.max_retries}): {e}")
-                    await asyncio.sleep(self.retry_delay)
+                    await asyncio.sleep(self.retry_delay * (attempt + 1))  # Exponential backoff
                 else:
                     logger.error(f"❌ Не удалось отправить сообщение после {self.max_retries} попыток: {e}")
                     return False
@@ -67,7 +67,7 @@ class TelegramHandler:
             except (NetworkError, TimedOut) as e:
                 if attempt < self.max_retries - 1:
                     logger.warning(f"⚠️ Ошибка сети при отправке видео (попытка {attempt + 1}/{self.max_retries}): {e}")
-                    await asyncio.sleep(self.retry_delay)
+                    await asyncio.sleep(self.retry_delay * (attempt + 1))  # Exponential backoff
                 else:
                     logger.error(f"❌ Не удалось отправить видео после {self.max_retries} попыток: {e}")
                     return False
@@ -101,7 +101,7 @@ class TelegramHandler:
             except (NetworkError, TimedOut) as e:
                 if attempt < self.max_retries - 1:
                     logger.warning(f"⚠️ Ошибка сети при отправке документа (попытка {attempt + 1}/{self.max_retries}): {e}")
-                    await asyncio.sleep(self.retry_delay)
+                    await asyncio.sleep(self.retry_delay * (attempt + 1))  # Exponential backoff
                 else:
                     logger.error(f"❌ Не удалось отправить документ после {self.max_retries} попыток: {e}")
                     return False
