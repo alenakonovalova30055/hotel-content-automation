@@ -1,5 +1,6 @@
 import os
 import io
+import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
@@ -9,15 +10,13 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 
 def authenticate_drive():
     try:
-        import json
-
-service_account_json = os.getenv('GOOGLE_SERVICE_ACCOUNT_JSON')
-service_account_info = json.loads(service_account_json)
-
-creds = service_account.Credentials.from_service_account_info(
-    service_account_info,
-    scopes=SCOPES
-)
+        service_account_json = os.getenv('GOOGLE_SERVICE_ACCOUNT_JSON')
+        service_account_info = json.loads(service_account_json)
+        
+        creds = service_account.Credentials.from_service_account_info(
+            service_account_info,
+            scopes=SCOPES
+        )
         service = build('drive', 'v3', credentials=creds)
         logger.info("✅ Google Drive аутентификация успешна")
         return service
