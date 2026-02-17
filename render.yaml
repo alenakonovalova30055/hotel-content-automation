@@ -1,0 +1,19 @@
+services:
+  - type: cron
+    name: hotel-bot
+    runtime: python39
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python scheduler.py
+    schedule: "0 9 * * *"
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_USER_ID
+        sync: false
+      - key: GOOGLE_DRIVE_FOLDER_ID
+        sync: false
+      - key: GOOGLE_SERVICE_ACCOUNT_PATH
+        sync: false

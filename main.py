@@ -2,7 +2,7 @@ import os
 import asyncio
 from dotenv import load_dotenv
 from src.logger import logger
-from src.google_drive import authenticate_drive, list_files_in_folder, download_file
+from src.google_drive import authenticate_drive, list_all_files_recursive, download_file
 from src.telegram_handler import TelegramHandler
 from src.openai_handler import OpenAIHandler
 
@@ -18,9 +18,9 @@ async def main():
         
         folder_id = os.getenv('GOOGLE_DRIVE_FOLDER_ID')
         
-        # 2. Получение списка файлов
+        # 2. Получение списка файлов (рекурсивно из подпапок)
         logger.info("📂 Получение списка файлов...")
-        files = list_files_in_folder(drive_service, folder_id)
+        files = list_all_files_recursive(drive_service, folder_id)
         
         if not files:
             logger.warning("⚠️ Файлы не найдены")
@@ -41,8 +41,12 @@ async def main():
             file_path = download_file(drive_service, file_id, file_name)
             
             if file_path:
+                # Читаем содержимое файла
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
                 # Генерируем описание с помощью OpenAI
-                description = openai_handler.generate_description(file_name)
+                description = openai_handler.generate_description(content)
                 
                 if description:
                     # Отправляем в Telegram
